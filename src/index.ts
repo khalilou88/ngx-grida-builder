@@ -24,7 +24,7 @@ export default createBuilder(xliffToJsonBuilder);
 
 async function xliffToJsonBuilder(
   options: Options,
-  context: BuilderContext
+  context: BuilderContext,
 ): Promise<BuilderOutput> {
   let isSourceDirExists =
     existsSync(options.source) && lstatSync(options.source).isDirectory();
@@ -47,14 +47,14 @@ async function xliffToJsonBuilder(
   }
 
   context.reportStatus(
-    `Converting xliff files to json from ${options.source} folder to ${options.destination} folder.`
+    `Converting xliff files to json from ${options.source} folder to ${options.destination} folder.`,
   );
   try {
     options.locales.forEach(async (locale) => {
       const xliffFile = path.join(options.source, `messages.${locale}.xlf`);
       const jsonFile = path.join(
         options.destination,
-        `messages.${locale}.json`
+        `messages.${locale}.json`,
       );
 
       if (existsSync(xliffFile)) {
@@ -91,7 +91,7 @@ async function xliffToJson(translations: any) {
     } else if (Array.isArray(translation)) {
       result[current] = translation
         .map((entry) =>
-          typeof entry === "string" ? entry : `{{${entry.Standalone.id}}}`
+          typeof entry === "string" ? entry : `{{${entry.Standalone.id}}}`,
         )
         .map((entry) => entry.replace("{{", "{$").replace("}}", "}"))
         .join("");
