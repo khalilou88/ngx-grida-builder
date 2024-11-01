@@ -12,7 +12,8 @@ import {
   writeFileSync,
 } from 'fs';
 import * as path from 'path';
-import { xliffToJson } from './xliff-to-json';
+// @ts-expect-error need this to work
+import { xliff12ToJs } from 'xliff';
 
 interface Options extends JsonObject {
   locales: string[];
@@ -68,4 +69,33 @@ async function xliffToJsonBuilder(
   }
   context.reportStatus('Done.');
   return { success: true };
+}
+
+
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function xliffToJson(translations: any) {
+  const parserResult = await xliff12ToJs(translations, {
+    captureSpacesBetweenElements: true,
+  });
+  const xliffContent = parserResult.resources['ng2.template'];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return Object.keys(xliffContent).reduce((result: any, current) => {
+    const translation = xliffContent[current].target;
+    if (typeof translation === 'string') {
+      result[current] = translation;
+    } else if (Array.isArray(translation)) {
+      result[current] = translation
+        .map((entry) =>
+          typeof entry === 'string' ? entry : `{{${entry.Standalone.id}}}`,
+        )
+        .map((entry) => entry.replace('{{', '{$').replace('}}', '}'))
+        .join('');
+    } else {
+      throw new Error('Could not parse XLIFF: ' + JSON.stringify(translation));
+    }
+    return result;
+  }, {});
 }
