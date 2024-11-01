@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "xliff-to-json": {
+      "implementation": "./src",
+      "schema": "./src/schema.json",
+      "description": "xliff to json."
+    }
+  }
+}

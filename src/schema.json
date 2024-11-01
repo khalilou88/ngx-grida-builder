@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "locales": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source": {
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    }
+  }
+}
+
