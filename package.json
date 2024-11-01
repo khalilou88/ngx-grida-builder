@@ -1,6 +1,6 @@
 {
   "name": "@ngx-grida/builder",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "src/index.js",
   "builders": "builders.json",
